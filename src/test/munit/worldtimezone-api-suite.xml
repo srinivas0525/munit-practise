@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="worldtimezone-api-suite.xml" />
+	<munit:test name="worldtimezone-apiFlow-test-1" doc:id="d228ffc6-519b-42f2-8787-dfac6f4822ce">
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy Request - Timezone" doc:id="cf51ca07-14e9-49a0-9899-90a2e751fe66" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="2f484326-2e9c-4b41-be72-67066dadf23d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="85c25780-5ce3-45dd-b9eb-c9635d8cc696" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import worldtimezoneapiFlowtest1::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="90bf13c9-1726-4d8e-a790-d3188fbb4f1e" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import worldtimezoneapiFlowtest1::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="d63ad53c-b432-45ff-be81-2c84e4e35a58" >
+				<munit:payload value="#[readUrl('classpath://worldtimezoneapiFlowtest1\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://worldtimezoneapiFlowtest1\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to worldtimezone-apiFlow" doc:id="e9e2cced-699a-409c-9e54-4dbf0ef39f18" name="worldtimezone-apiFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="b012c285-3bb8-4adb-8951-beac42843a0b" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import worldtimezoneapiFlowtest1::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Set Payload" doc:id="5358294b-99ca-460d-ad0f-27c451cdf94b" processor="set-payload" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d6589ec0-5660-43c1-be7c-c5acd4743c5c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call doc:name="Verify Request - Timezone" doc:id="825496c2-4f1d-48f0-b9b5-b7d03750dcc9" processor="http:request" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="2f484326-2e9c-4b41-be72-67066dadf23d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="worldtimezone-apiFlow-test-2" doc:id="3b4b17dd-7b7b-4821-b360-e86c22f4abbe" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Request - Timezone" doc:id="72c72e78-b4c4-4006-a1ae-323cb611a268" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="2f484326-2e9c-4b41-be72-67066dadf23d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://worldtimezoneapiFlowtest2\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:attributes value="#[readUrl('classpath://worldtimezoneapiFlowtest2\mock_attributes.dwl')]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="b879bd87-1a26-4ddb-b754-69a6df58d008" >
+				<munit:payload value="#[readUrl('classpath://worldtimezoneapiFlowtest2\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://worldtimezoneapiFlowtest2\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to worldtimezone-apiFlow" doc:id="5aee4a18-e446-40b2-86d9-cfba3833de66" name="worldtimezone-apiFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="d1a02ac2-fac0-4d89-aff5-372f8fcd46cf" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import worldtimezoneapiFlowtest2::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Set Payload" doc:id="7572989c-7d0f-487e-b1ab-dc0ec7f5f6e7" processor="set-payload" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="d6589ec0-5660-43c1-be7c-c5acd4743c5c" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
