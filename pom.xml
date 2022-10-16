@@ -13,7 +13,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<app.runtime>4.4.0-20220221</app.runtime>
+		<app.runtime>4.4.0-20220725</app.runtime>
+		<munit.runtimteVersion>4.4.0-20220725</munit.runtimteVersion>
 		<mule.maven.plugin.version>3.5.4</mule.maven.plugin.version>
 		<munit.version>2.3.9</munit.version>
 	</properties>
@@ -25,11 +26,7 @@
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.0.0</version>
 			</plugin>
-			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-deploy-plugin</artifactId>
-			    <version>3.0.0</version>
-			</plugin>
+			
 			<plugin>
 				<groupId>org.mule.tools.maven</groupId>
 				<artifactId>mule-maven-plugin</artifactId>
@@ -42,7 +39,7 @@
 									<password>Krishi@2410</password>
 									<muleVersion>${app.runtime}</muleVersion>									
 									<environment>Sandbox</environment>
-									<applicationName>${artifactId}</applicationName>
+									<applicationName>${project.artifactId}</applicationName>
 									<businessGroup>ABC</businessGroup>
 									<workerType>Micro</workerType>
 									<workers>1</workers>
